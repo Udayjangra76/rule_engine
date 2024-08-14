@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rule Engine UI</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <h1>Rule Engine</h1>
+
+    <h2>Create Rule</h2>
+    <form id="create-rule-form">
+      <textarea
+        id="rule_string"
+        placeholder="Enter rule string here"
+        rows="5"
+      ></textarea>
+      <br />
+      <input type="text" id="description" placeholder="Description" /><br />
+      <button type="button" onclick="createRule()">Create Rule</button>
+    </form>
+
+    <h2>Update Rule</h2>
+    <form id="update-rule-form">
+      <input
+        type="number"
+        id="update_rule_id"
+        placeholder="Rule ID"
+        required
+      /><br />
+      <textarea
+        id="updated_rule_string"
+        placeholder="Updated rule string here"
+        rows="5"
+        required
+      ></textarea>
+      <br />
+      <input
+        type="text"
+        id="updated_description"
+        placeholder="Updated Description"
+      /><br />
+      <button type="button" onclick="updateRule()">Update Rule</button>
+    </form>
+
+    <h2>Delete Rule</h2>
+    <form id="delete-rule-form">
+      <input
+        type="number"
+        id="delete_rule_id"
+        placeholder="Rule ID"
+        required
+      /><br />
+      <button type="button" onclick="deleteRule()">Delete Rule</button>
+    </form>
+
+    <h2>Evaluate Rules</h2>
+    <form id="evaluate-rules-form">
+      <input
+        type="text"
+        id="rule_ids"
+        placeholder="Enter rule IDs (comma separated)"
+      /><br />
+      <textarea id="data" placeholder="Enter data as JSON" rows="5"></textarea
+      ><br />
+      <button type="button" onclick="evaluateRules()">Evaluate</button>
+    </form>
+
+    <h2>Results</h2>
+    <pre id="results"></pre>
+
+    <script>
+      async function createRule() {
+        const ruleString = document.getElementById("rule_string").value;
+        const description = document.getElementById("description").value;
+        const response = await fetch("/rules", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rule_string: ruleString,
+            description: description,
+          }),
+        });
+        const data = await response.json();
+        alert("Rule created with ID: " + data.id);
+      }
+
+      async function updateRule() {
+        const ruleId = document.getElementById("update_rule_id").value;
+        const updatedRuleString = document.getElementById(
+          "updated_rule_string"
+        ).value;
+        const updatedDescription = document.getElementById(
+          "updated_description"
+        ).value;
+        const response = await fetch(`/rules/${ruleId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rule_string: updatedRuleString,
+            description: updatedDescription,
+          }),
+        });
+        const data = await response.json();
+        alert("Rule updated successfully: " + data.status);
+      }
+
+      async function deleteRule() {
+        const ruleId = document.getElementById("delete_rule_id").value;
+        const response = await fetch(`/rules/${ruleId}`, {
+          method: "DELETE",
+        });
+        const data = await response.json();
+        alert("Rule deleted successfully: " + data.status);
+      }
+      async function evaluateRules() {
+        const ruleIds = document
+          .getElementById("rule_ids")
+          .value.split(",")
+          .map((id) => parseInt(id.trim()));
+        const data = JSON.parse(document.getElementById("data").value);
+        const response = await fetch("/evaluate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rule_ids: ruleIds, data: data }),
+        });
+        const result = await response.json();
+        document.getElementById("results").textContent = JSON.stringify(
+          result.result,
+          null,
+          2
+        );
+      }
+    </script>
+  </body>
+</html>

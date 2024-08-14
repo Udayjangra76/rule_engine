@@ -1,0 +1,96 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #e9ecef, #f4f4f4);
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #007BFF;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    border-bottom: 2px solid #007BFF;
+    padding-bottom: 10px;
+    color: #0056b3;
+    font-size: 1.8em;
+}
+
+form {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+textarea,
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+textarea:focus,
+input[type="text"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+pre {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #888;
+}
+
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.5em;
+    }
+
+    button {
+        width: 100%;
+        font-size: 1em;
+    }
+}
